@@ -1,0 +1,8 @@
+FROM openjdk:17-jdk-slim  
+# 'slim' versiyonu seçildi - performans için 
+WORKDIR /app
+COPY target/agritrust-backend-0.0.1-SNAPSHOT.jar app.jar
+# Maven ile derlenen JAR dosyasını (target klasöründen) konteynerin içine kopyalar.
+# "Write Once, Run Anywhere"
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
