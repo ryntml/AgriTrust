@@ -1,0 +1,2 @@
+-- AgriTrust Database Initialization
+-- Bu dosya Docker ilk çalıştığında otomatik olarak tabloları oluşturur.
