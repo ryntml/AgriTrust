@@ -1,0 +1,126 @@
+spring:
+  application:
+    name: agritrust-backend
+  
+  # ========================================
+  # DATABASE CONFIGURATION (REYYAN's AREA)
+  # PostgreSQL Master-Slave Setup
+  # ========================================
+  
+  datasource:
+    # PRIMARY DATASOURCE - Master Node (WRITE operations)
+    # Tüm INSERT, UPDATE, DELETE işlemleri buraya gider
+    url: jdbc:postgresql://postgres-master:5432/agritrust_db
+    username: agri_user
+    password: agri_pass
+    driver-class-name: org.postgresql.Driver
+    
+    hikari:
+      # Connection pool settings - performans için
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  # SECONDARY DATASOURCE - Slave Node (READ operations - Optional)
+  # İleride READ yükünü dağıtmak için kullanılabilir
+  # Şu an için yorumda, gerekirse Aleyna aktif eder
+  # secondary-datasource:
+  #   url: jdbc:postgresql://postgres-slave:5433/agritrust_db
+  #   username: agri_user
+  #   password: agri_pass
+  
+  # JPA / Hibernate Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      # ddl-auto: validate
+      # validate = init.sql'deki tablolar varsa kontrol eder, yoksa hata verir
+      # production'da "validate" kullanılmalı
+      # development sırasında "update" kullanılabilir (tabloları otomatik günceller)
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+  
+  # ========================================
+  # RABBITMQ CONFIGURATION (REYYAN's AREA)
+  # Message Queue for Request Buffering
+  # ========================================
+  
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    # Connection retry settings
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3000
+          max-attempts: 3
+
+# ========================================
+# SERVER CONFIGURATION
+# ========================================
+
+server:
+  port: 8080
+  # Dockerfile EXPOSE 8080 ile eşleşiyor
+  error:
+    include-message: always
+    include-binding-errors: always
+  
+  # Shutdown timeout - Docker stop sırasında graceful shutdown
+  shutdown: graceful
+
+# ========================================
+# JWT CONFIGURATION (ALEYNA's AREA)
+# JSON Web Token Authentication
+# ========================================
+
+jwt:
+  # UYARI: Production'da environment variable kullan!
+  # Docker: docker run -e JWT_SECRET=your-secret-key
+  secret: AgriTrustSecretKey2024ChangeThisInProduction!
+  # Token geçerlilik süresi (milisaniye cinsinden)
+  expiration: 86400000  # 24 saat
+
+# ========================================
+# ACTUATOR ENDPOINTS (MONITORING)
+# Docker Health Check için
+# ========================================
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # Health endpoint'i dışarıya aç (Docker healthcheck kullanır)
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  health:
+    # RabbitMQ ve PostgreSQL sağlık kontrolü
+    rabbitmq:
+      enabled: true
+    db:
+      enabled: true
+
+# ========================================
+# LOGGING CONFIGURATION
+# ========================================
+
+logging:
+  level:
+    root: INFO
+    com.agritrust: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"

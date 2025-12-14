@@ -1,8 +1,82 @@
-FROM openjdk:17-jdk-slim  
-# 'slim' versiyonu seçildi - performans için 
+# =====================================
+# STAGE 1: Build Stage (Maven)
+# Bu stage sadece JAR dosyasını oluşturur
+# =====================================
+FROM maven:3.9.5-eclipse-temurin-17-alpine AS builder
+
+# Metadata
+LABEL maintainer="AgriTrust Team"
+LABEL description="AgriTrust Backend - Build Stage"
+
+WORKDIR /build
+
+# Copy only pom.xml first for better layer caching
+# Dependency'ler değişmezse bu layer cache'den kullanılır
+COPY pom.xml .
+
+# Download dependencies (Bu adım cache'lenebilir)
+RUN mvn dependency:go-offline -B
+
+# Copy source code
+COPY src ./src
+
+# Build application (skip tests for faster builds in CI/CD)
+# Production build için tests çalıştırılmalı: mvn clean package
+RUN mvn clean package -DskipTests
+
+# =====================================
+# STAGE 2: Runtime Stage (Production)
+# Sadece JAR ve gerekli JRE ile minimal image
+# =====================================
+FROM eclipse-temurin:17-jre-alpine
+
+# Metadata
+LABEL maintainer="AgriTrust Team"
+LABEL version="0.0.1-SNAPSHOT"
+LABEL description="AgriTrust Backend - Distributed Agricultural Supply Chain System"
+
+# Install curl for health check
+RUN apk add --no-cache curl
+
+# Create non-root user for security
+# Spring Boot'u root olarak çalıştırmak güvenlik riski
+RUN addgroup -S agritrust && adduser -S agritrust -G agritrust
+
 WORKDIR /app
-COPY target/agritrust-backend-0.0.1-SNAPSHOT.jar app.jar
-# Maven ile derlenen JAR dosyasını (target klasöründen) konteynerin içine kopyalar.
-# "Write Once, Run Anywhere"
+
+# Copy JAR from build stage
+COPY --from=builder /build/target/agritrust-backend-0.0.1-SNAPSHOT.jar app.jar
+
+# Change ownership to non-root user
+RUN chown -R agritrust:agritrust /app
+
+# Switch to non-root user
+USER agritrust
+
+# Expose application port
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# Health check - Docker otomatik olarak container sağlığını kontrol eder
+# Spring Boot Actuator'un /actuator/health endpoint'ini kullanır
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:8080/actuator/health || exit 1
+
+# JVM heap size optimization
+# Container'a ayrılan memory'nin ~75%'i kullanılır
+ENV JAVA_OPTS="-Xmx512m -Xms256m -XX:+UseContainerSupport"
+
+# Run application
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+
+# =====================================
+# BUILD & RUN INSTRUCTIONS
+# =====================================
+# Build:
+#   docker build -t agritrust-backend:latest .
+#
+# Run standalone:
+#   docker run -p 8080:8080 --name agritrust agritrust-backend:latest
+#
+# Run with docker-compose:
+#   docker-compose up -d
+# =====================================

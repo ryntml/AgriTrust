@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Master Veritabanı (Yazma işlemleri)
   # 1. PostgreSQL MASTER Node
