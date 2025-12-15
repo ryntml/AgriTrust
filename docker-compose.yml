@@ -8,11 +8,12 @@ services:
     image: bitnami/postgresql:latest  # Replikasyon ayarları hazır olduğu için Bitnami imajı kullanıldı.
     container_name: agritrust-db-master
     ports:
-      - "5432:5432"
+      - "5440:5432"
     environment:
       - POSTGRESQL_REPLICATION_MODE=master
       - POSTGRESQL_REPLICATION_USER=repl_user
       - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_POSTGRES_PASSWORD=postgres_pass  # Postgres superuser şifresi
       - POSTGRESQL_USERNAME=agri_user  # Spring Boot'un kullanacağı ana kullanıcı.
       - POSTGRESQL_PASSWORD=agri_pass
       - POSTGRESQL_DATABASE=agritrust_db  # Projenin ana veritabanı ismi.

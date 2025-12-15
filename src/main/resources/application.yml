@@ -10,7 +10,7 @@ spring:
   datasource:
     # PRIMARY DATASOURCE - Master Node (WRITE operations)
     # Tüm INSERT, UPDATE, DELETE işlemleri buraya gider
-    url: jdbc:postgresql://localhost:5432/agritrust_db
+    url: jdbc:postgresql://localhost:5440/agritrust_db
     username: agri_user
     password: agri_pass
     driver-class-name: org.postgresql.Driver
@@ -55,7 +55,7 @@ spring:
   # ========================================
   
   rabbitmq:
-    host: rabbitmq
+    host: localhost
     port: 5672
     username: guest
     password: guest

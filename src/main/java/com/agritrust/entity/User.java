@@ -27,24 +27,25 @@ import lombok.NoArgsConstructor;
  */
 
 @Entity
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
+@Table(name = "\"users\"")
+// @Data
+// @NoArgsConstructor
+// @AllArgsConstructor
 public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private Long citizen_id;
-    
-    @Column(nullable = false,length = 100)
+
+    @Column(nullable = false, length = 100)
     private String name;
-    
-    @Column(nullable = false,length = 150)
+
+    @Column(nullable = false, length = 150)
     private String surname;
-    
+
     @Column(nullable = false, unique = true, length = 30)
     private String username;
 
@@ -66,6 +67,6 @@ public abstract class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private Boolean isActive = true;	//delete column
+    private Boolean isActive = true; // delete column
 
 }
