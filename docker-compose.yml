@@ -5,7 +5,7 @@ services:
   # Tüm YAZMA (INSERT, UPDATE) işlemleri bu sunucuya yapılır.
   # Veriler buradan Slave node'a otomatik olarak kopyalanır.
   postgres-master:  
-    image: bitnami/postgresql:15  # Replikasyon ayarları hazır olduğu için Bitnami imajı kullanıldı.
+    image: bitnami/postgresql:latest  # Replikasyon ayarları hazır olduğu için Bitnami imajı kullanıldı.
     container_name: agritrust-db-master
     ports:
       - "5432:5432"
@@ -26,7 +26,7 @@ services:
   # Master çökerse sistemin durmasını engeller (Fault Tolerance).
   # İstenirse sadece OKUMA (SELECT) işlemleri buraya yönlendirilerek yük dağıtılabilir.
   postgres-slave:
-    image: bitnami/postgresql:15
+    image: bitnami/postgresql:latest
     container_name: agritrust-db-slave
     depends_on:
       - postgres-master  # Master ayağa kalkmadan Slave çalışmasın.
