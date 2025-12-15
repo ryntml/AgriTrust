@@ -39,12 +39,15 @@ spring:
       # validate = init.sql'deki tablolar varsa kontrol eder, yoksa hata verir
       # production'da "validate" kullanılmalı
       # development sırasında "update" kullanılabilir (tabloları otomatik günceller)
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
         use_sql_comments: true
+        jdbc:
+          time_zone: UTC
+          batch_size: 20
   
   # ========================================
   # RABBITMQ CONFIGURATION (REYYAN's AREA)
