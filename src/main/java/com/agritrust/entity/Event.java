@@ -67,9 +67,9 @@
 //    private Product product;
 //
 //    /**
-//     * User who performed this action
+//     * UserEntity who performed this action
 //     */
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "actor_id")
-//    private User actor;
+//    private UserEntity actor;
 //}

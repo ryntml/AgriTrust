@@ -77,12 +77,12 @@
 //     */
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "from_node_id")
-//    private User fromNode;
+//    private UserEntity fromNode;
 //
 //    /**
 //     * Receiver (DISTRIBUTOR, CONSUMER, etc.)
 //     */
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "to_node_id", nullable = false)
-//    private User toNode;
+//    private UserEntity toNode;
 //}

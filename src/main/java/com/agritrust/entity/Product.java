@@ -79,7 +79,7 @@
 //     */
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "producer_id")
-//    private User producer;
+//    private UserEntity producer;
 //
 //    /**
 //     * Events related to this product (supply chain tracking)
