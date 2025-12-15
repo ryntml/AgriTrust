@@ -1,9 +1,5 @@
-package com.agritrust.entity.enums;
+package com.agritrust.enums;
 
-/**
- * Event type enumeration for supply chain tracking
- * Used in the distributed event-log architecture to track product movements
- */
 public enum EventType {
     /**
      * Product was harvested from the farm
@@ -13,7 +9,7 @@ public enum EventType {
     /**
      * Product is being transported between locations
      */
-    TRANSPORTED,
+    TRANSPORT,
 
     /**
      * Product was stored in a warehouse or facility
@@ -28,5 +24,9 @@ public enum EventType {
     /**
      * Product underwent quality inspection
      */
-    INSPECTED
+    INSPECT,
+    /**
+     * Product was used in another's production
+     */
+    PROCESSED
 }

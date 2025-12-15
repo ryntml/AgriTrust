@@ -10,7 +10,7 @@ spring:
   datasource:
     # PRIMARY DATASOURCE - Master Node (WRITE operations)
     # Tüm INSERT, UPDATE, DELETE işlemleri buraya gider
-    url: jdbc:postgresql://postgres-master:5432/agritrust_db
+    url: jdbc:postgresql://localhost:5432/agritrust_db
     username: agri_user
     password: agri_pass
     driver-class-name: org.postgresql.Driver
@@ -35,7 +35,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      # ddl-auto: validate
+      #ddl-auto: validate
       # validate = init.sql'deki tablolar varsa kontrol eder, yoksa hata verir
       # production'da "validate" kullanılmalı
       # development sırasında "update" kullanılabilir (tabloları otomatik günceller)

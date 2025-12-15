@@ -1,9 +1,5 @@
-package com.agritrust.entity.enums;
+package com.agritrust.enums;
 
-/**
- * Product status enumeration for AgriTrust supply chain
- * Tracks the lifecycle state of agricultural products
- */
 public enum ProductStatus {
     /**
      * Product is available and active in the supply chain
