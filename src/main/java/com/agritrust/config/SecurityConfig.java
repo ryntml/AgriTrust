@@ -36,7 +36,7 @@ public class SecurityConfig {
 	        .csrf(AbstractHttpConfigurer::disable)
 	        .cors(Customizer.withDefaults()) // use CorsWebConfig IS THIS NECESSARY FOR DB
 	        .authorizeHttpRequests(r -> r
-	            .requestMatchers("/auth/login").permitAll()
+	            .requestMatchers("/auth/**").permitAll()//adminler eklendikten sonra /login yapılacak
 	            .anyRequest().authenticated()
 	        )
 	        .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
