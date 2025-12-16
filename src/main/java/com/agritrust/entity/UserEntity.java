@@ -39,9 +39,9 @@ public abstract class UserEntity implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @Column(unique = true)
+    @Column(unique = true,length=11)
     private Long citizen_id;
 
     @Column(nullable = false, length = 100)
@@ -73,7 +73,7 @@ public abstract class UserEntity implements UserDetails{
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private Boolean isActive = true; // deleted mantıgı
+    private Boolean deleted; 
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
