@@ -1,14 +1,13 @@
 package com.agritrust.service.impl;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,26 +15,33 @@ import com.agritrust.service.IJwtUtils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtUtilsService implements IJwtUtils {	//JWT üretilen yer
-	//docker secretlarda duran sevret keyi buraya nasıl alacağız
-	private final String SECRET_KEY_BASE = "LSDHW765706570968570865708965ddddddddRELNLFK4654654DSADSAD4454DSADSDQQ5454";
-	private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 saat
 
-	private SecretKey secretKey;
+	private final SecretKey secretKey;
+    private final long expirationTime;
 
-	public JwtUtilsService() {
-		byte[] secretKeyBytes = Base64.getDecoder().decode(SECRET_KEY_BASE.getBytes(StandardCharsets.UTF_8));
-		this.secretKey = new SecretKeySpec(secretKeyBytes, "HmacSHA256");
-	}
+    public JwtUtilsService(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration}") long expiration) {
+        
+        this.expirationTime = expiration;
+        
+        // 1. Decode the Base64 string from YAML into bytes
+        byte[] decodedKey = Base64.getDecoder().decode(secret);
+        
+        // 2. Create the HMAC-SHA key
+        this.secretKey = Keys.hmacShaKeyFor(decodedKey);
+    }
 
 	@Override
 	public String generateToken(UserDetails userDetails) {
 		return Jwts.builder()
 				.subject(userDetails.getUsername())
 				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+				.expiration(new Date(System.currentTimeMillis() + expirationTime))
 				.signWith(secretKey)
 				.compact();
 	}
@@ -69,7 +75,7 @@ public class JwtUtilsService implements IJwtUtils {	//JWT üretilen yer
 				.claims(claims)
 				.subject(userDetails.getUsername())
 				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+				.expiration(new Date(System.currentTimeMillis() + expirationTime))
 				.signWith(secretKey).compact();
 	}
 

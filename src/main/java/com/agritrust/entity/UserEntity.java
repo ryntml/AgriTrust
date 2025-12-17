@@ -35,7 +35,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name="users")
-public abstract class UserEntity implements UserDetails{
+public class UserEntity implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,7 +57,7 @@ public abstract class UserEntity implements UserDetails{
     @Column(nullable = false, length = 255)
     private String password; // BCrypt hashed password
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     @Size(min=6, max=30)
     @Email
     private String email;
@@ -79,7 +79,7 @@ public abstract class UserEntity implements UserDetails{
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority(role.name()));
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
 		
 		return authorities;
 	}
@@ -88,5 +88,27 @@ public abstract class UserEntity implements UserDetails{
 	public String getPassword() {
 		return password;
 	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return deleted == null || !deleted;
+	}
+
 
 }

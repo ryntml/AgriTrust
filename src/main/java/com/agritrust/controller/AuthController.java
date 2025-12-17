@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agritrust.dto.JwtTokenDto;
 import com.agritrust.dto.LoginDto;
-import com.agritrust.entity.UserEntity;
+import com.agritrust.dto.RegisterDto;
 import com.agritrust.service.impl.AuthService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,8 +21,8 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 	private final AuthService authService;
 	
-	@PostMapping("/signup")
-	public ResponseEntity<UserEntity> register(@RequestBody UserEntity newUser){
+	@PostMapping("/register")
+	public ResponseEntity<RegisterDto> register(@Valid @RequestBody RegisterDto newUser){
 		return ResponseEntity.ok(authService.kaydet(newUser));
 	}
 	

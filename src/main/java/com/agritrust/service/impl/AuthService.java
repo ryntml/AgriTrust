@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.agritrust.dto.JwtTokenDto;
 import com.agritrust.dto.LoginDto;
+import com.agritrust.dto.RegisterDto;
 import com.agritrust.entity.UserEntity;
 import com.agritrust.service.IAuthService;
 
@@ -48,13 +49,17 @@ public class AuthService implements IAuthService {
 		return tokenDto;
 	}
 
-	public UserEntity kaydet(UserEntity userToRegister) {
-
-		userToRegister.setPassword(passwordEncoder.encode(userToRegister.getPassword()));
-		userService.add(userToRegister);
-
-		return userToRegister;
-
+	public RegisterDto kaydet(RegisterDto kayitDTO){
+		
+		UserEntity user = mapper.map(kayitDTO,UserEntity.class);
+		
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		userService.add(user);
+		
+		RegisterDto kullaniciDTO = this.mapper.map(user, RegisterDto.class);
+		
+		return kullaniciDTO;
+		
 	}
 
 }

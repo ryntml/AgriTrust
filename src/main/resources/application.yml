@@ -74,6 +74,8 @@ spring:
 server:
   port: 8080
   # Dockerfile EXPOSE 8080 ile eşleşiyor
+  servlet:
+    context-path: /api
   error:
     include-message: always
     include-binding-errors: always
@@ -89,9 +91,9 @@ server:
 jwt:
   # UYARI: Production'da environment variable kullan!
   # Docker: docker run -e JWT_SECRET=your-secret-key
-  secret: AgriTrustSecretKey2024ChangeThisInProduction!
+  secret: 399f6bb8c9404046d0c9ce4311da8a4174ffd9fc28f204daead7bb9e08d18a61
   # Token geçerlilik süresi (milisaniye cinsinden)
-  expiration: 86400000  # 24 saat
+  expiration: 3600000  # 1 saat
 
 # ========================================
 # ACTUATOR ENDPOINTS (MONITORING)
@@ -99,6 +101,8 @@ jwt:
 # ========================================
 
 management:
+  server:
+    base-path: / # This moves actuator from /api/actuator to just /actuator
   endpoints:
     web:
       exposure:

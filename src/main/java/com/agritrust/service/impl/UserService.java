@@ -63,7 +63,7 @@ public class UserService implements UserDetailsService,UserReadable,UserWritable
 	}
 
     public List<UserEntity> findUsersByRoles(Roles role) {//enum nasıl gönderiliyor?
-        return userRepo.findAllByRoles(role);
+        return userRepo.findAllByRole(role);
     }
     
     public UserEntity findUserByUsername(String username) {

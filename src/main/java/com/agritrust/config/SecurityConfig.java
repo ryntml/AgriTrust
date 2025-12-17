@@ -34,9 +34,9 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    return http
 	        .csrf(AbstractHttpConfigurer::disable)
-	        .cors(Customizer.withDefaults()) // use CorsWebConfig IS THIS NECESSARY FOR DB
+	        .cors(Customizer.withDefaults()) // no UI yet
 	        .authorizeHttpRequests(r -> r
-	            .requestMatchers("/auth/**").permitAll()//adminler eklendikten sonra /login yapılacak
+	            .requestMatchers("/auth/login","/error").permitAll()
 	            .anyRequest().authenticated()
 	        )
 	        .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
