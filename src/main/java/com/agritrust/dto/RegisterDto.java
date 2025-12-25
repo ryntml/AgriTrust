@@ -1,9 +1,5 @@
 package com.agritrust.dto;
 
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.CreationTimestamp;
-
 import com.agritrust.enums.Roles;
 
 import jakarta.persistence.EnumType;
