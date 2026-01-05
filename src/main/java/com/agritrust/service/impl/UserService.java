@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agritrust.entity.UserEntity;
 import com.agritrust.enums.Roles;
@@ -18,6 +19,7 @@ import com.agritrust.service.UserWritable;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService,UserReadable,UserWritable{
 
@@ -55,12 +57,12 @@ public class UserService implements UserDetailsService,UserReadable,UserWritable
 		
 	}
 
-//	@Override
-//	public void remove(Integer id) {
-//		UserEntity userToDelete = this.getById(id);
-//		userToDelete.setDeleted(true);
-//		userRepo.save(userToDelete);	
-//	}
+	@Override
+	public void remove(Integer id) {	//for filtering reasons
+		UserEntity userToDelete = this.getById(id);
+		userToDelete.setDeleted(true);
+		userRepo.save(userToDelete);	
+	}
 
     public List<UserEntity> findUsersByRoles(Roles role) {//enum nasıl gönderiliyor?
         return userRepo.findAllByRole(role);

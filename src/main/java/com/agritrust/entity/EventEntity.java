@@ -18,7 +18,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +25,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class EventEntity {
 
     @Id
@@ -59,8 +57,7 @@ public class EventEntity {
     ----------------------------*/
 
     @Column(precision = 10, scale = 2)
-    private BigDecimal price;  
-    // Used for SALE, PROCESSING cost, etc.
+    private BigDecimal price;  // Used for SALE, PROCESSING cost, etc.
 
     @Column(length = 100)
     private String fromLocation; // TRANSFER
