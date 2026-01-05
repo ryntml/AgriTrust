@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.agritrust.enums.ProductStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -58,11 +60,10 @@ public class ProductBatchEntity {
     @JoinColumn(name = "producer_id", nullable = false)
     private UserEntity producer;
 
-    /**
-     * Soft delete / lifecycle marker
-     */
+
+    //lifecycle marker
     @Column(nullable = false)
-    private Boolean active = true;
+    private ProductStatus status = ProductStatus.ACTIVE;	//active, sold or expired,
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

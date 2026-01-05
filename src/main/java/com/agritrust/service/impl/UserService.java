@@ -55,12 +55,12 @@ public class UserService implements UserDetailsService,UserReadable,UserWritable
 		
 	}
 
-	@Override
-	public void remove(Integer id) {
-		UserEntity userToDelete = this.getById(id);
-		userToDelete.setDeleted(true);
-		userRepo.save(userToDelete);	
-	}
+//	@Override
+//	public void remove(Integer id) {
+//		UserEntity userToDelete = this.getById(id);
+//		userToDelete.setDeleted(true);
+//		userRepo.save(userToDelete);	
+//	}
 
     public List<UserEntity> findUsersByRoles(Roles role) {//enum nasıl gönderiliyor?
         return userRepo.findAllByRole(role);
