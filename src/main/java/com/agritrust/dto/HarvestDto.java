@@ -1,5 +1,25 @@
 package com.agritrust.dto;
 
-public class HarvestDto {
+import java.math.BigDecimal;
 
+import com.agritrust.enums.EventType;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public class HarvestDto implements EventRequestDto {
+
+    @NotNull
+    private BigDecimal price;	//neyin priceı
+
+    @NotNull
+    private BigDecimal quantity;
+
+    @NotBlank
+    private String description;
+
+    @Override
+    public EventType getEventType() {
+        return EventType.HARVEST;
+    }
 }

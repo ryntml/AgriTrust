@@ -1,5 +1,23 @@
 package com.agritrust.dto;
 
-public class ProcessDto {
+import java.math.BigDecimal;
 
+import com.agritrust.enums.EventType;
+
+import jakarta.validation.constraints.NotNull;
+
+public class ProcessDto implements EventRequestDto {
+
+    @NotNull
+    private BigDecimal quantity;
+
+    @NotNull
+    private BigDecimal price;
+
+    private String description;
+
+    @Override
+    public EventType getEventType() {
+        return EventType.PROCESSING;
+    }
 }

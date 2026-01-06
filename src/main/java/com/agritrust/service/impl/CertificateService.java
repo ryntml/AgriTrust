@@ -45,7 +45,7 @@ public class CertificateService implements CertificateReadable,CertificateWritab
 
 	@Override
 	public CertificateEntity getByCertificateNumber(String certificateNumber) {
-		return certRepo.findByCertificateNumberAndRevokedFalse(certificateNumber).orElseThrow(()-> new IllegalArgumentException());
+		return certRepo.findByCertificateNumber(certificateNumber).orElseThrow(()-> new IllegalArgumentException());
 	}
 
 	@Override
