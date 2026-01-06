@@ -7,6 +7,13 @@ import com.agritrust.entity.ProductBatchEntity;
 import com.agritrust.entity.UserEntity;
 import com.agritrust.enums.EventType;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class EventDto {		//kayıtları kullanıcıya göstermek için
 	private EventType eventType;
 

@@ -1,11 +1,16 @@
 package com.agritrust.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.agritrust.dto.CreateProductBatchDto;
+import com.agritrust.dto.HarvestDto;
 import com.agritrust.entity.ProductBatchEntity;
+import com.agritrust.entity.UserEntity;
 import com.agritrust.enums.ProductStatus;
 import com.agritrust.repos.ProductBatchRepository;
 import com.agritrust.service.ProductBatchReadable;
@@ -19,6 +24,13 @@ import lombok.RequiredArgsConstructor;
 public class ProductBatchService implements ProductBatchReadable, ProductBatchWritable{
 
 	private ProductBatchRepository batchRepo;
+	private EventService eventService;
+	private ModelMapper modelMapper;
+	
+	private String generateBatchCode() {
+	    return UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+	}
+	
 	@Override
 	public List<ProductBatchEntity> getList() {
 		return batchRepo.findAll();
@@ -30,9 +42,26 @@ public class ProductBatchService implements ProductBatchReadable, ProductBatchWr
 	}
 
 	@Override
-	public void add(ProductBatchEntity entity) {
-		batchRepo.save(entity);	//entity must not be null, handle
-		
+	public ProductBatchEntity createBatch(CreateProductBatchDto dto, UserEntity producer) {
+	    ProductBatchEntity batch = modelMapper.map(dto, ProductBatchEntity.class);
+
+	    batch.setBatchCode(generateBatchCode());
+	    batch.setProducer(producer);
+	    batch.setStatus(ProductStatus.ACTIVE);
+	    
+	    try {
+			batchRepo.save(batch);	//also returns entity, no problem for now.
+		} 
+	    catch (Exception e) {
+			System.out.println("Problem saving batch: " + e.getMessage());	//better error handling later
+		}
+	    
+	    eventService.recordEvent(		//start event chain
+	            batch,
+	            producer,
+	            new HarvestDto(dto.getInitialPrice(), dto.getQuantity(), "Initial harvest")
+	    );
+	    return batch;
 	}
 
 	@Override

@@ -51,8 +51,7 @@ public class EventService implements EventReadableAndWritable {
 	@Override
 	@Transactional(readOnly = true)
 	public List<EventDto> getLogisticsTrace(Long productBatchId) {
-		return eventRepo.findByProductBatchIdAndEventType(productBatchId,
-						List.of(EventType.HARVEST, EventType.PROCESSING))
+		return eventRepo.findByProductBatchIdAndEventType(productBatchId,List.of(EventType.TRANSFER))
 				.stream().map(e -> modelMapper.map(e, EventDto.class)).toList();
 	}
 
