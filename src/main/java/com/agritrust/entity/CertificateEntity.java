@@ -41,9 +41,9 @@ public class CertificateEntity {
     @Column(nullable = false, length = 150)
     private String issuingAuthority;
     
-    @Column(nullable = false, length = 150)
+    @ManyToOne(fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name = "auditor_id")
-    private UserEntity auditor;
+    private UserEntity auditor;	
 
     @Column
     private LocalDate issuedDate;

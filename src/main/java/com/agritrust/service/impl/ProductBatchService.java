@@ -23,9 +23,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductBatchService implements ProductBatchReadable, ProductBatchWritable{
 
-	private ProductBatchRepository batchRepo;
-	private EventService eventService;
-	private ModelMapper modelMapper;
+	private final ProductBatchRepository batchRepo;
+	private final EventService eventService;
+	private final ModelMapper modelMapper;
 	
 	private String generateBatchCode() {
 	    return UUID.randomUUID().toString().substring(0, 8).toUpperCase();

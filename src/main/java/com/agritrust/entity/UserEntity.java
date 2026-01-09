@@ -42,7 +42,7 @@ public class UserEntity implements UserDetails{
     private Integer id;
 
     @Column(unique = true,length=11)
-    private Long citizen_id;
+    private Long citizenId;
 
     @Column(nullable = false, length = 100)
     private String name;
@@ -73,7 +73,7 @@ public class UserEntity implements UserDetails{
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private Boolean deleted; 
+    private boolean deleted; 
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -107,7 +107,7 @@ public class UserEntity implements UserDetails{
 
 	@Override
 	public boolean isEnabled() {
-		return deleted == null || !deleted;
+		return !deleted;
 	}
 
 

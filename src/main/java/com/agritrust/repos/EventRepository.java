@@ -13,6 +13,6 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
 
     List<EventEntity> findByProductBatchIdOrderByCreatedAtAsc(Long productBatchId);
 
-    List<EventEntity> findByProductBatchIdAndEventType(Long productBatchId, List<EventType> eventTypes);
+    List<EventEntity> findByProductBatchIdAndEventTypeIn(Long productBatchId, List<EventType> eventTypes);	//equal değil de in işlemi, liste olduğu için
 }
 

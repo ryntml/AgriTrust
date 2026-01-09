@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class RegisterDto {
 	@Min(10000000000L)		//The @Size annotation is intended for Strings, Collections, Maps, or Arrays.
 	@Max(99999999999L)
-    private Long citizen_id;
+    private Long citizenId;
 
     @Size(min=2,max=100)
     @NotNull

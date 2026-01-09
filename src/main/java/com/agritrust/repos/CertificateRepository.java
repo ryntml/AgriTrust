@@ -13,7 +13,7 @@ public interface CertificateRepository extends JpaRepository<CertificateEntity,L
 	Optional<CertificateEntity> findByCertificateNumber(String certificateNumber);
 	Optional<CertificateEntity> findByCertificateNumberAndRevokedFalse(String certificateNumber);
 	List<CertificateEntity> findByRevokedFalse();
-	List<CertificateEntity> findAllByAuditor(Long auditorCitizenId);
-	List<CertificateEntity> findByProductBatch(Long id);
+	List<CertificateEntity> findAllByAuditorId(Integer auditorId);//normal id sütunu joinlendiğinden
+	List<CertificateEntity> findByProductBatchId(Long id);
 	
 }

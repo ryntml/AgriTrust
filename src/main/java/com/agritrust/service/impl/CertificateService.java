@@ -54,8 +54,8 @@ public class CertificateService implements CertificateReadable,CertificateWritab
 	}
 
 	@Override
-	public List<CertificateEntity> getByAuditor(Long auditorId) {//şüpheli
-		return certRepo.findAllByAuditor(auditorId);
+	public List<CertificateEntity> getByAuditor(Integer auditorId) {//şüpheli
+		return certRepo.findAllByAuditorId(auditorId);
 	}
 
 }

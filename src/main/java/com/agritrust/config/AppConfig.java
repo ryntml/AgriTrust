@@ -1,13 +1,18 @@
 package com.agritrust.config;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AppConfig {
 	@Bean
-	public ModelMapper mapper() {
-		return new ModelMapper();
+	public ModelMapper modelMapper() {
+	    ModelMapper modelMapper = new ModelMapper();
+	    modelMapper.getConfiguration()
+	        .setMatchingStrategy(MatchingStrategies.STRICT);	//bu olmazsa sorun çıkmaya başladı
+	  return modelMapper;  
 	}
+	
 }
