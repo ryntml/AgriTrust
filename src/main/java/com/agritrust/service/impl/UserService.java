@@ -60,7 +60,7 @@ public class UserService implements UserDetailsService,UserReadable,UserWritable
 
 	@Override
 	public void remove(Integer id) {	//for filtering reasons
-		UserEntity userToDelete = this.getById(id);
+		UserEntity userToDelete = userRepo.findById(id).orElseThrow(() -> new IllegalArgumentException());
 		userToDelete.setDeleted(true);
 		userRepo.save(userToDelete);	
 	}

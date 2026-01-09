@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agritrust.dto.UserUpdateDto;
@@ -21,45 +19,51 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequiredArgsConstructor 
+@RequiredArgsConstructor
 public class UserController {
 	private final UserReadable userReadableService;
 	private final UserWritable userWritableService;
 	private final ModelMapper modelMapper;
-	
-	@GetMapping({"/users", "/users/"})
+
+	@GetMapping({ "/users", "/users/" })
 	public ResponseEntity<List<UserEntity>> getAllUsers() {
-		
-	    List<UserEntity> users = userReadableService.getList();
-	    
-	    if (users.isEmpty()) {
-	        return ResponseEntity.noContent().build();	//dönüş başarılı ama içerik yok
-	    }
-	    
-	    return ResponseEntity.ok(users);
+
+		List<UserEntity> users = userReadableService.getList();
+
+		if (users.isEmpty()) {
+			return ResponseEntity.noContent().build(); // dönüş başarılı ama içerik yok
+		}
+
+		return ResponseEntity.ok(users);
 	}
-	
-	@PostMapping("/users/{id}")	//username password email değişebilir
-	public void updateUser(@PathVariable("id") Integer id,@Valid @RequestBody UserUpdateDto userDto) {
+
+	@PostMapping("/users/{id}") // username password email değişebilir
+	public void updateUser(@PathVariable("id") Integer id, @Valid @RequestBody UserUpdateDto userDto) {
 
 		UserEntity user = new UserEntity();
 		modelMapper.map(userDto, user);
 		user.setId(id);
-				
+
 		userWritableService.change(id, user);
 	}
 
 	@GetMapping("/users/{id}")
 	public ResponseEntity<UserEntity> getUser(@PathVariable("id") Integer id) {
-		
-	    UserEntity user = userReadableService.getById(id);
-	    
-	    if (user.isDeleted()) {
-	        return ResponseEntity.noContent().build();	//dönüş başarılı ama içerik yok
-	    }
-	    
-	    return ResponseEntity.ok(user);
+
+		UserEntity user = userReadableService.getById(id);
+
+		if (user.isDeleted()) {
+			return ResponseEntity.noContent().build(); // dönüş başarılı ama içerik yok
+		}
+
+		return ResponseEntity.ok(user);
 	}
-	
-	//deletion method and error handling
+
+	@GetMapping("/admin/users/{id}")
+	public ResponseEntity<UserEntity> deleteUser(@PathVariable Integer id) {
+		userWritableService.remove(id);
+
+		return ResponseEntity.ok(userReadableService.getById(id));
+	}
+
 }
