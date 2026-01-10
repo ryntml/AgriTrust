@@ -4,7 +4,7 @@ spring:
   
   jackson:
     serialization:
-      fail-on-empty-beans: false
+      FAIL_ON_EMPTY_BEANS: false
   # ========================================
   # DATABASE CONFIGURATION (REYYAN's AREA)
   # PostgreSQL Master-Slave Setup
