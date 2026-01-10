@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agritrust.dto.EventDto;
+import com.agritrust.dto.ProcessDto;
 import com.agritrust.dto.TransferDto;
 import com.agritrust.entity.ProductBatchEntity;
 import com.agritrust.entity.UserEntity;
@@ -29,19 +30,39 @@ public class EventController {
 
 	private final EventService eventService;
 	private final ProductBatchService batchService;
-	
+
 	@PostMapping("/logistics/{batchId}")
 	// @PreAuthorize("hasRole('DISTRIBUTOR') or hasRole('PRODUCER')")
 	public ResponseEntity<Void> transferProduct(@PathVariable Long batchId, @Valid @RequestBody TransferDto dto,
 			@AuthenticationPrincipal UserEntity transporter) {
-		
+
 		ProductBatchEntity batch = batchService.getById(batchId);
 		eventService.recordEvent(batch, transporter, dto);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	@GetMapping("logistics/{batchId}")
-	public ResponseEntity<List<EventDto>> transferTrace(@PathVariable Long batchId){
+	@GetMapping("/logistics/{batchId}")
+	public ResponseEntity<List<EventDto>> transferTrace(@PathVariable Long batchId) {
 		return ResponseEntity.ok(eventService.getLogisticsTrace(batchId));
+	}
+
+	@PostMapping("/trans/{batchId}")
+	// @PreAuthorize("hasRole('PRODUCER')")
+	public ResponseEntity<Void> addProcessingEvent(@PathVariable Long batchId, @Valid @RequestBody ProcessDto dto,
+			@AuthenticationPrincipal UserEntity processor) {
+		
+		ProductBatchEntity batch = batchService.getById(batchId);
+		eventService.recordEvent(batch,processor, dto);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+
+	@GetMapping("/trans/{batchId}")
+	public ResponseEntity<List<EventDto>> processTrace(@PathVariable Long batchId) {
+		return ResponseEntity.ok(eventService.getProcessingTrace(batchId));
+	}
+	
+	@GetMapping("/trace/{batchId}")
+	public ResponseEntity<List<EventDto>> getAllTrace(@PathVariable Long batchId) {
+		return ResponseEntity.ok(eventService.getFullTrace(batchId));
 	}
 }
