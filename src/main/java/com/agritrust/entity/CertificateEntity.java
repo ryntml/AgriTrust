@@ -41,8 +41,8 @@ public class CertificateEntity {
     @Column(nullable = false, length = 150)
     private String issuingAuthority;
     
-    @ManyToOne(fetch = FetchType.LAZY, optional=false)
-    @JoinColumn(name = "auditor_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auditor_id", nullable=false)
     private UserEntity auditor;	
 
     @Column
@@ -54,8 +54,8 @@ public class CertificateEntity {
     /**
      * Product batch this certificate applies to
      */
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "product_batch_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_batch_id", nullable=false)
     private ProductBatchEntity productBatch;
 
     @CreationTimestamp

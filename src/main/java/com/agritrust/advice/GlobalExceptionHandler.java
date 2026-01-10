@@ -61,10 +61,4 @@ public class GlobalExceptionHandler {
 		return error;
 	}
 	
-	@ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
-	@ExceptionHandler(Exception.class)
-	public ErrorResponseDto handleGenericException(Exception ex) {
-		ErrorResponseDto error = new ErrorResponseDto("This is the general exception handler.Some uncaugt exception is thrown.",ex.getMessage());
-		return error;
-	}
 }

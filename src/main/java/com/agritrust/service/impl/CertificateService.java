@@ -40,7 +40,7 @@ public class CertificateService implements CertificateReadable,CertificateWritab
 	public void revoke(String certificateNumber) {
 		CertificateEntity certToRevoke = certRepo.findByCertificateNumberAndRevokedFalse(certificateNumber)
 				.orElseThrow(()-> new IllegalArgumentException());;
-		certToRevoke.setRevoked(true);
+		certToRevoke.setRevoked(true);	//add to event chain later
 		certRepo.save(certToRevoke);
 	}
 
@@ -64,9 +64,10 @@ public class CertificateService implements CertificateReadable,CertificateWritab
 		CertificateEntity certificate = modelMapper.map(dto, CertificateEntity.class);
 
 	    certificate.setProductBatch(product);
+	    certificate.setAuditor(auditor);
 		certRepo.save(certificate);	
 	    
-	    eventService.recordEvent(		//start event chain
+	    eventService.recordEvent(		
 	            product,
 	            auditor,
 	            new CertificateEventDto("New certificate added for batch " + product.getBatchCode())

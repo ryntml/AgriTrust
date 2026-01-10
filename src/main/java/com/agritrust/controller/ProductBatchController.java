@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agritrust.dto.CreateProductBatchDto;
+import com.agritrust.dto.ProductBatchResponseDto;
 import com.agritrust.entity.ProductBatchEntity;
 import com.agritrust.entity.UserEntity;
 import com.agritrust.service.impl.ProductBatchService;
@@ -53,12 +54,12 @@ public class ProductBatchController {
 
 	@GetMapping
 	// @PreAuthorize("hasAnyRole('ADMIN','AUDITOR')")
-	public ResponseEntity<List<ProductBatchEntity>> getAllBatches() {
+	public ResponseEntity<List<ProductBatchResponseDto>> getAllBatches() {
 
 		return ResponseEntity.ok(productBatchService.getList()
-//                        .stream()
-//                        .map(b -> modelMapper.map(b, ProductBatchResponseDTO.class))
-//                        .toList()
+                        .stream()
+                        .map(b -> modelMapper.map(b, ProductBatchResponseDto.class))
+                        .toList()
 		);
 	}
 }
