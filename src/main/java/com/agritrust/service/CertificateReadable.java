@@ -8,4 +8,5 @@ public interface CertificateReadable extends Readable<CertificateEntity, Long>{
 	CertificateEntity getByCertificateNumber(String certificateNumber);
 	List<CertificateEntity> getAllValid();
 	List<CertificateEntity> getByAuditor(Integer auditorId);
+	List<CertificateEntity> getByProduct(Long id);
 }

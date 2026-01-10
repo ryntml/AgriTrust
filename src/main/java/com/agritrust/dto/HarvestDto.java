@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class HarvestDto implements EventRequestDto {
 
     @NotNull
-    private BigDecimal price;	//neyin priceı
+    private BigDecimal price;	
 
     @NotNull
     private BigDecimal quantity;

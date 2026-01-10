@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CertificateDto implements EventRequestDto {
+public class CertificateEventDto implements EventRequestDto {
 
     private String description;
 

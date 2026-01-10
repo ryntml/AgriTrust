@@ -35,8 +35,9 @@ public class SecurityConfig {
 	    return http
 	        .csrf(AbstractHttpConfigurer::disable)
 	        .cors(Customizer.withDefaults()) // no UI yet
+	        .logout((logout) -> logout.logoutUrl("/auth/logout"))	//post will perform default operations using a series of LogoutHandler instances
 	        .authorizeHttpRequests(r -> r
-	            .requestMatchers("/auth/login","/auth/register","/error").permitAll()	//
+	            .requestMatchers("/auth/login","/auth/register","/error").permitAll()	//register endpointi en son kapatılacak
 	            .anyRequest().authenticated()
 	        )
 	        .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
