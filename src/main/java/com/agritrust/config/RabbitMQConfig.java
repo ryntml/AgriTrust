@@ -11,6 +11,10 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 /**
  * RabbitMQ Configuration
  * "Prevent request overload" için message queue yapılandırması
@@ -59,10 +63,14 @@ public class RabbitMQConfig {
     /**
      * JSON formatında mesaj dönüşümü
      * DTO'ları otomatik serialize/deserialize eder
+     * JavaTimeModule ile LocalDateTime desteği
      */
     @Bean
     public MessageConverter jsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
 
     /**
