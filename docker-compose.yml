@@ -60,6 +60,38 @@ services:
     networks:      
       - agritrust-net
 
+  # 4. Spring Boot Backend Application
+  # Ana uygulama servisi - tüm API endpoint'lerini sağlar
+  agritrust-backend:
+    build: 
+      context: .
+      dockerfile: DockerFile
+    container_name: agritrust-backend
+    ports:
+      - "8080:8080"  # REST API portu
+    depends_on:
+      - postgres-master  # DB hazır olmadan başlamasın
+      - rabbitmq         # RabbitMQ hazır olmadan başlamasın
+    environment:
+      # Database bağlantısı - container ismi üzerinden
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-master:5432/agritrust_db
+      - SPRING_DATASOURCE_USERNAME=agri_user
+      - SPRING_DATASOURCE_PASSWORD=agri_pass
+      # RabbitMQ bağlantısı - container ismi üzerinden
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    networks:
+      - agritrust-net
+    restart: on-failure  # Başarısız olursa yeniden dene (DB hazır olana kadar)
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s  # Spring Boot'un başlaması için süre
+
 volumes:
   pg_master_data:  # Master veritabanı dosyaları
   pg_slave_data:  # Slave veritabanı dosyaları
