@@ -35,11 +35,11 @@ public class EventMessageConsumer {
      */
     @RabbitListener(queues = RabbitMQConfig.EVENT_QUEUE)
     public void consumeEventMessage(EventMessageDto message) {
-        log.info("📥 Received event from queue:");
-        log.info("   Event Type: {}", message.getEventType());
-        log.info("   Batch Code: {}", message.getBatchCode());
-        log.info("   Actor: {}", message.getActorUsername());
-        log.info("   Timestamp: {}", message.getTimestamp());
+        log.info(" Received event from queue:");
+        log.info(" Event Type: {}", message.getEventType());
+        log.info(" Batch Code: {}", message.getBatchCode());
+        log.info(" Actor: {}", message.getActorUsername());
+        log.info(" Timestamp: {}", message.getTimestamp());
 
         // Burada async işlemler yapılabilir:
         // - Audit log kaydetme
@@ -58,28 +58,28 @@ public class EventMessageConsumer {
         // Örnek: Event tipine göre farklı işlemler
         switch (message.getEventType()) {
             case HARVEST:
-                log.info("🌾 Processing HARVEST event for batch: {}", message.getBatchCode());
+                log.info(" Processing HARVEST event for batch: {}", message.getBatchCode());
                 // Hasat istatistiklerini güncelle
                 break;
             case TRANSFER:
-                log.info("🚚 Processing TRANSFER event: {} -> {}",
+                log.info(" Processing TRANSFER event: {} -> {}",
                         message.getFromLocation(), message.getToLocation());
                 // Lojistik takibi güncelle
                 break;
             case SALE:
-                log.info("💰 Processing SALE event for batch: {}", message.getBatchCode());
+                log.info(" Processing SALE event for batch: {}", message.getBatchCode());
                 // Satış raporlarını güncelle
                 break;
             case PROCESSING:
-                log.info("⚙️ Processing PROCESSING event for batch: {}", message.getBatchCode());
+                log.info(" Processing PROCESSING event for batch: {}", message.getBatchCode());
                 break;
             case CERTIFICATE_ADD_OR_REVOKE:
-                log.info("📜 Processing CERTIFICATE event for batch: {}", message.getBatchCode());
+                log.info(" Processing CERTIFICATE event for batch: {}", message.getBatchCode());
                 break;
             default:
                 log.warn("Unknown event type: {}", message.getEventType());
         }
 
-        log.info("✅ Event processed successfully");
+        log.info(" Event processed successfully");
     }
 }

@@ -36,10 +36,10 @@ public class EventMessageProducer {
                     RabbitMQConfig.EVENT_EXCHANGE,
                     RabbitMQConfig.EVENT_ROUTING_KEY,
                     message);
-            log.info("✅ Event message sent to queue: {} - BatchCode: {}",
+            log.info(" Event message sent to queue: {} - BatchCode: {}",
                     message.getEventType(), message.getBatchCode());
         } catch (Exception e) {
-            log.error("❌ Failed to send event message to queue: {}", e.getMessage());
+            log.error(" Failed to send event message to queue: {}", e.getMessage());
             // Queue'ya gönderilemezse sessizce devam et (fire-and-forget)
             // Ana iş mantığını etkilemesin
         }
